@@ -3,11 +3,7 @@ You disabled logging macros when building this binary; however, the log level is
 Calling target program-options parser
 Adding interface s1-eth1 as port 1
 Adding interface s1-eth2 as port 2
-[13:58:11.097] [bmv2] [I] [thread 22379] Starting Thrift server on port 9090
-[13:58:11.098] [bmv2] [I] [thread 22379] Thrift server was started
-[13:58:47.886] [bmv2] [T] [thread 22563] bm_get_config
-[13:58:47.887] [bmv2] [T] [thread 22563] bm_mgmt_get_info
-[13:59:34.524] [bmv2] [T] [thread 22596] bm_get_config
-[13:59:34.524] [bmv2] [T] [thread 22596] bm_mgmt_get_info
+[15:04:20.641] [bmv2] [I] [thread 29325] Starting Thrift server on port 9090
+[15:04:20.642] [bmv2] [I] [thread 29325] Thrift server was started
 open: No such file or directory
 open: No such file or directory

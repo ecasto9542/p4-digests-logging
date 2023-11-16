@@ -49,10 +49,26 @@ header udp_t{
   bit<16> checksum;
 }
 
+header pmu_t {
+    bit<16>   sync;
+    bit<16>   frame_size;
+    bit<16>   id_code;
+    bit<32>   soc;
+    bit<32>   fracsec;
+    bit<16>   stat;
+    bit<64>   phasors;
+    bit<16>   freq;
+    bit<16>   dfreq;
+    bit<32>   analog;
+    bit<16>   digital;
+    bit<16>   chk;
+}
+
 struct headers {
     ethernet_t   ethernet;
     ipv4_t       ipv4;
     udp_t          udp;
+    pmu_t          pmu;
 }
 
 
@@ -97,6 +113,14 @@ parser MyParser(packet_in packet,
 
     state parse_udp {
         packet.extract(hdr.udp);
+        transition select(hdr.udp.desPort){
+            4712: parse_pmu;
+            default: accept;
+        }
+    }
+
+    state parse_pmu {
+        packet.extract(hdr.pmu);
         transition accept;
     }
 
@@ -121,6 +145,9 @@ struct phasor_t {
 control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
+
+    register<bit<32>>(1) prev_fracsec_regs;
+    register<bit<32>>(1) prev_soc_regs;
 
     action drop() {
         mark_to_drop(standard_metadata);
@@ -156,6 +183,11 @@ control MyIngress(inout headers hdr,
         //disable hdr is valid for speed test
         if (hdr.ipv4.isValid()) {
             //conditionally send data to the control plane here using the send_digest_message action
+
+            //if not delayed
+            prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec);
+            prev_soc_regs.write((bit<32>)0, hdr.pmu.soc);
+
             ipv4_lpm.apply();
         }
     }
