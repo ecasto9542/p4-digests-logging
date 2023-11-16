@@ -150,35 +150,6 @@ def generate_new_packet(interface, soc_in, frac_sec_in, voltage, angle, settings
     # Close the UDP socket
     udp_socket.close()
 
-"""
-def run_nnpy_thread(q, sock):
-    # Create the thread
-    nnpy_thread = Thread(target=fetch_traffic, args=([q], [sock]))
-
-    # Start the thread and set as daemon (kills the thread once main thread ends)
-    nnpy_thread.daemon = True
-    nnpy_thread.start()
-
-def listen_for_events(q, controller):
-    while True:
-        event_data = q.get()
-        on_digest_recv(event_data)
-        q.task_done()
-
-def fetch_traffic(q, sock):
-    q = q[0]
-    sock = sock[0]
-
-    # Listen for incoming datagrams
-    while(True):
-        # Receive traffic from socket
-        data = sock.recv(bufferSize)
-
-
-        # Update the queue with the message
-        q.put(data)
-"""
-
 def calc_missing_packet_count(curr_soc, curr_fracsec, last_stored_soc, last_stored_fracsec, freq_hz=60):
     soc_diff = curr_soc - last_stored_soc
     fracsec_diff = 0

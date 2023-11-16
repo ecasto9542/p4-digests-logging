@@ -6,7 +6,6 @@ import struct
 import nnpy
 import socket
 import math
-from sorted_list import KeySortedList
 from threading import Thread
 from queue import Queue
 import time
@@ -66,7 +65,7 @@ def setup():
     sub.connect(socket)
     sub.setsockopt(nnpy.SUB, nnpy.SUB_SUBSCRIBE, '')
 
-    return runtime_api, args.terminate_after, sub
+    return runtime_api, sub
 
 def listen_for_new_digests(q):
     event_data = q.get()

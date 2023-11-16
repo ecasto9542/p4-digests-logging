@@ -96,7 +96,7 @@ parser MyParser(packet_in packet,
 
     state parse_udp {
         packet.extract(hdr.udp);
-        transition accept
+        transition accept;
     }
 
 }
@@ -126,8 +126,8 @@ control MyIngress(inout headers hdr,
     }
 
     action send_digest_message() {
-        meta.digest_message.some_number = (bit<32>)1234;
-        digest(1, meta.jpt_packet);
+        meta.my_digest_message.some_number = (bit<32>)1234;
+        digest(1, meta.my_digest_message);
     }
 
     action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
