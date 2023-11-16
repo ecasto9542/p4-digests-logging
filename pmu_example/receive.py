@@ -12,6 +12,7 @@ from datetime import datetime
 UDP_IP_ADDRESS = "0.0.0.0"  # listen on all available interfaces
 UDP_PORT_NO = 4712  # PMU data port number
 sorted_pmus = KeySortedList(keyfunc = lambda pmu: pmu["soc"] + pmu["frac_sec"] / 1000000)
+received_counter = 0
 
 # create a UDP socket object
 serverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -66,11 +67,10 @@ def parse_console_args(parser):
 
 #queue pmu packets for processing
 def queue_pmu_packets(q, terminate_after):
-    received_counter = 0
-    while received_counter < terminate_after:
-        data, addr = serverSock.recvfrom(1500)  # receive up to 1500 bytes of data
-        received_counter += 1
-        q.put(data)
+    global received_counter
+    data, addr = serverSock.recvfrom(1500)  # receive up to 1500 bytes of data
+    received_counter += 1
+    q.put(data)
     print("Receieved " + str(received_counter) + " packets")
 
 def process_pmu_packet(raw_pmu_packet, received_counter):

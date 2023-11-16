@@ -27,8 +27,8 @@ def generate_packet(time, voltage, angle, settings={"pmu_measurement_bytes": 8, 
 
     # 2 byte
 
-    #sync = b'\xAA\x01'
-    sync = index.to_bytes(2, 'big')
+    sync = b'\xAA\x01'
+    #sync = index.to_bytes(2, 'big')
 
 
     # 2 byte, 44 for 32 bit values of PMU, 40 for 16 bit values of PMU
@@ -81,7 +81,6 @@ def generate_packet(time, voltage, angle, settings={"pmu_measurement_bytes": 8, 
 
     # Send the PMU packet to the destination IP address and port number
     udp_socket.sendto(pmu_packet, (destination_ip, destination_port))
-    index += 1
 
     # Close the UDP socket
     udp_socket.close()
@@ -91,7 +90,7 @@ def parse_console_args(parser):
     parser.add_argument('filename')
     parser.add_argument('--ip', default="10.0.2.2")
     parser.add_argument('--port', default=4712)
-    parser.add_argument('--num_packets', default=-1)
+    parser.add_argument('--num_packets', default=100)
     parser.add_argument('--drop_indexes', default='./evaluation/missing-data.json')
     parser.add_argument('--time_sent_file', required=True)
 
@@ -124,17 +123,9 @@ if __name__ == "__main__":
     for i in range(num_to_send):
         if i == 0:
             print("Start transmission at: " + str(datetime.now()))
-
         #sending to loopback as opposed to switch
         settings_obj = {"destination_ip": "127.0.0.1" if i in drop_indexes else  args.ip, "destination_port": int(args.port)}
-        #settings_obj = {"destination_ip": args.ip, "destination_port": int(args.port)}
-        #print(str(i+1) + " | " + "Magnitude: " + str(pmu_csv_data["magnitudes"][0][i]) + " | Phase_angle: " + str(pmu_csv_data["phase_angles"][0][i]))
         time.sleep(0.017)
-        #if not (i in drop_indexes):
         generate_packet(pmu_csv_data["times"][i], pmu_csv_data["magnitudes"][0][i], pmu_csv_data["phase_angles"][0][i], settings_obj)
-    print("Finished sending  " + str(i + 1) + " packets")
-    with open(args.time_sent_file, 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(csv_sent_time_data)
 
     # generate_packets()
