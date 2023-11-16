@@ -12,7 +12,6 @@ from datetime import datetime
 UDP_IP_ADDRESS = "0.0.0.0"  # listen on all available interfaces
 UDP_PORT_NO = 4712  # PMU data port number
 sorted_pmus = KeySortedList(keyfunc = lambda pmu: pmu["soc"] + pmu["frac_sec"] / 1000000)
-received_counter = 0
 
 # create a UDP socket object
 serverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -59,7 +58,6 @@ def cntrl_c_handler(signum, frame):
 
 
 def parse_console_args(parser):
-    parser.add_argument('filename', help='file to print results')
     parser.add_argument('--terminate_after', type=int, help='Number of packets to receive before terminating')
 
     return parser.parse_args()
@@ -67,10 +65,11 @@ def parse_console_args(parser):
 
 #queue pmu packets for processing
 def queue_pmu_packets(q, terminate_after):
-    global received_counter
-    data, addr = serverSock.recvfrom(1500)  # receive up to 1500 bytes of data
-    received_counter += 1
-    q.put(data)
+    received_counter = 0
+    while received_counter < terminate_after:
+        data, addr = serverSock.recvfrom(1500)  # receive up to 1500 bytes of data
+        received_counter += 1
+        q.put(data)
     print("Receieved " + str(received_counter) + " packets")
 
 def process_pmu_packet(raw_pmu_packet, received_counter):
@@ -112,5 +111,4 @@ if __name__ == "__main__":
     print("Received all packets at: " + str(datetime.now()))
 
     serverSock.close()
-    sorted_pmus.write_to_csv(args.filename)
 
