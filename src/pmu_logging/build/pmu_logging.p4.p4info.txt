@@ -41,6 +41,20 @@ actions {
 }
 actions {
   preamble {
+    id: 19284130
+    name: "MyIngress.send_digest_message"
+    alias: "send_digest_message"
+  }
+}
+actions {
+  preamble {
+    id: 24530890
+    name: "MyIngress.update_registers"
+    alias: "update_registers"
+  }
+}
+actions {
+  preamble {
     id: 28792405
     name: "MyIngress.ipv4_forward"
     alias: "ipv4_forward"
@@ -86,5 +100,147 @@ registers {
   }
   size: 1
 }
+registers {
+  preamble {
+    id: 379124554
+    name: "MyIngress.frac_sec_regs"
+    alias: "frac_sec_regs"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 377287118
+    name: "MyIngress.soc_regs"
+    alias: "soc_regs"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 379421842
+    name: "MyIngress.magnitude_regs"
+    alias: "magnitude_regs"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 375715011
+    name: "MyIngress.phase_angle_regs"
+    alias: "phase_angle_regs"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 371727482
+    name: "MyIngress.R1"
+    alias: "R1"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 1
+}
+digests {
+  preamble {
+    id: 392008662
+    name: "digest_pmu_packet"
+    alias: "digest_pmu_packet"
+  }
+  type_spec {
+    struct {
+      name: "digest_pmu_packet"
+    }
+  }
+}
 type_info {
+  structs {
+    key: "digest_pmu_packet"
+    value {
+      members {
+        name: "soc0"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 32
+            }
+          }
+        }
+      }
+      members {
+        name: "fracsec0"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 32
+            }
+          }
+        }
+      }
+      members {
+        name: "phasors0"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 64
+            }
+          }
+        }
+      }
+      members {
+        name: "curr_soc"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 32
+            }
+          }
+        }
+      }
+      members {
+        name: "curr_fracsec"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 32
+            }
+          }
+        }
+      }
+    }
+  }
 }

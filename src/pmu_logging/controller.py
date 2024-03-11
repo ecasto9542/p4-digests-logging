@@ -12,7 +12,7 @@ import time
 
 # Global variables
 digest_message_num_bytes = 8
-
+delayed_packet_count = 0
 
 class SimpleSwitchAPI(runtime_CLI.RuntimeAPI):
     @staticmethod
@@ -25,6 +25,7 @@ class SimpleSwitchAPI(runtime_CLI.RuntimeAPI):
         self.sswitch_client = sswitch_client
 
 def on_digest_recv(msg):
+    print("Currently in on_digest_recv")
     #unpacking digest header, "num" is the number of messages in the digest
     _, _, ctx_id, list_id, buffer_id, num = struct.unpack("<iQiiQi", msg[:32])
 
@@ -34,11 +35,46 @@ def on_digest_recv(msg):
 
     offset = digest_message_num_bytes
 
+    
+
     # loop through the messages in the digest
-    for msg in range(num):
+    for m in range(num):
+        global delayed_packet_count
+        print("message in digest is being logged")
+        delayed_packet_count=delayed_packet_count+1
         msg_copy = msg[0:]
         #### unpack the message
+        msg = msg[offset:]
 
+        digest_packet = {
+        "soc0": msg[0:4],
+        "fracsec0": msg[4:8],
+        "phasors0": msg[8:16],
+        "curr_soc": msg[16:20],
+        "curr_fracsec": msg[20:24]
+        }  
+        #read the individual bytes of msg to extract information you just sent from the data plane
+        # """
+        #     struct digest_pmu_packet {
+        #         //bit<16>   idcode0;
+        #         bit<32>   soc0;
+        #         bit<32>   fracsec0;
+        #         bit<64>   phasors0;
+        #         bit<32>   curr_soc;
+        #         bit<32>   curr_fracsec;
+        #     }
+        # """
+        soc0= int.from_bytes(msg[0:4],byteorder="big")
+        fracsec0= int.from_bytes(msg[4:8],byteorder="big")
+        phasors0= int.from_bytes(msg[8:16],byteorder="big")
+        curr_soc= int.from_bytes(msg[16:20],byteorder="big")
+        curr_fracsec= int.from_bytes(msg[20:24],byteorder="big")
+
+        curr_soc = int.from_bytes(msg_copy[0:4], byteorder="big")
+        curr_fracsec = int.from_bytes(msg_copy[4:8], byteorder="big")
+
+        print("NUM DELAYED TOTAL: " + str(delayed_packet_count))
+        return digest_packet
 
         msg = msg[offset:]
 

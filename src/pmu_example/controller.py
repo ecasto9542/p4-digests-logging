@@ -220,6 +220,7 @@ def on_digest_recv(msg):
 
         missing_packet_counter += missing_packets
         print("NUM MISSING TOTAL: " + str(missing_packet_counter))
+        #print("NUM MISSING TOTAL: 0")
 
 
 

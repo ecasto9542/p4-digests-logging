@@ -4,7 +4,27 @@
       "name" : "scalars_0",
       "id" : 0,
       "fields" : [
-        ["metadata._my_digest_message_some_number0", 32, false]
+        ["tmp", 32, false],
+        ["tmp_0", 32, false],
+        ["tmp_1", 64, false],
+        ["tmp_2", 32, false],
+        ["tmp_3", 32, false],
+        ["tmp_4", 32, false],
+        ["tmp_5", 32, false],
+        ["tmp_6", 64, false],
+        ["tmp_7", 32, false],
+        ["tmp_8", 32, false],
+        ["tmp_9", 32, false],
+        ["tmp_10", 32, false],
+        ["temp_mag_0", 32, false],
+        ["temp_ang_0", 32, false],
+        ["prev_fracsec_0", 32, false],
+        ["prev_soc_0", 32, false],
+        ["metadata._digest_packet_soc00", 32, false],
+        ["metadata._digest_packet_fracsec01", 32, false],
+        ["metadata._digest_packet_phasors02", 64, false],
+        ["metadata._digest_packet_curr_soc3", 32, false],
+        ["metadata._digest_packet_curr_fracsec4", 32, false]
       ]
     },
     {
@@ -290,11 +310,11 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 236,
+        "line" : 323,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
-      "order" : ["ethernet", "ipv4", "udp"],
+      "order" : ["ethernet", "ipv4", "udp", "pmu"],
       "primitives" : []
     }
   ],
@@ -306,7 +326,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 149,
+        "line" : 156,
         "column" : 25,
         "source_fragment" : "prev_fracsec_regs"
       },
@@ -318,9 +338,69 @@
       "id" : 1,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 150,
+        "line" : 157,
         "column" : 25,
         "source_fragment" : "prev_soc_regs"
+      },
+      "size" : 1,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "MyIngress.frac_sec_regs",
+      "id" : 2,
+      "source_info" : {
+        "filename" : "pmu_logging.p4",
+        "line" : 159,
+        "column" : 25,
+        "source_fragment" : "frac_sec_regs"
+      },
+      "size" : 1,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "MyIngress.soc_regs",
+      "id" : 3,
+      "source_info" : {
+        "filename" : "pmu_logging.p4",
+        "line" : 160,
+        "column" : 25,
+        "source_fragment" : "soc_regs"
+      },
+      "size" : 1,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "MyIngress.magnitude_regs",
+      "id" : 4,
+      "source_info" : {
+        "filename" : "pmu_logging.p4",
+        "line" : 161,
+        "column" : 25,
+        "source_fragment" : "magnitude_regs"
+      },
+      "size" : 1,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "MyIngress.phase_angle_regs",
+      "id" : 5,
+      "source_info" : {
+        "filename" : "pmu_logging.p4",
+        "line" : 162,
+        "column" : 25,
+        "source_fragment" : "phase_angle_regs"
+      },
+      "size" : 1,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "MyIngress.R1",
+      "id" : 6,
+      "source_info" : {
+        "filename" : "pmu_logging.p4",
+        "line" : 163,
+        "column" : 25,
+        "source_fragment" : "R1"
       },
       "size" : 1,
       "bitwidth" : 32
@@ -332,7 +412,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 214,
+        "line" : 301,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },
@@ -385,7 +465,72 @@
       ]
     }
   ],
-  "learn_lists" : [],
+  "learn_lists" : [
+    {
+      "id" : 1,
+      "name" : "digest_pmu_packet",
+      "source_info" : {
+        "filename" : "pmu_logging.p4",
+        "line" : 190,
+        "column" : 18,
+        "source_fragment" : "meta"
+      },
+      "elements" : [
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_0"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_1"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_2"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_3"]
+        }
+      ]
+    },
+    {
+      "id" : 2,
+      "name" : "digest_pmu_packet",
+      "source_info" : {
+        "filename" : "pmu_logging.p4",
+        "line" : 190,
+        "column" : 18,
+        "source_fragment" : "meta"
+      },
+      "elements" : [
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_4"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_5"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_6"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_7"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_8"]
+        }
+      ]
+    }
+  ],
   "actions" : [
     {
       "name" : "NoAction",
@@ -408,7 +553,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 153,
+            "line" : 172,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -416,8 +561,1003 @@
       ]
     },
     {
-      "name" : "MyIngress.ipv4_forward",
+      "name" : "MyIngress.send_digest_message",
       "id" : 2,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "temp_mag_0"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.magnitude_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 181,
+            "column" : 8,
+            "source_fragment" : "magnitude_regs.read(temp_mag, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "temp_ang_0"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.phase_angle_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 182,
+            "column" : 8,
+            "source_fragment" : "phase_angle_regs.read(temp_ang, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_phasors02"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "temp_mag_0"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0xffffffffffffffff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x20"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "temp_ang_0"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 183,
+            "column" : 8,
+            "source_fragment" : "meta.digest_packet.phasors0 = temp_mag ++ temp_ang"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_soc00"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.soc_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 184,
+            "column" : 8,
+            "source_fragment" : "soc_regs.read(meta.digest_packet.soc0, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_fracsec01"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.frac_sec_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 185,
+            "column" : 8,
+            "source_fragment" : "frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_curr_soc3"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "soc"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 187,
+            "column" : 8,
+            "source_fragment" : "meta.digest_packet.curr_soc = hdr.pmu.soc"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_curr_fracsec4"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "fracsec"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 188,
+            "column" : 8,
+            "source_fragment" : "meta.digest_packet.curr_fracsec = hdr.pmu.fracsec"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_soc00"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_0"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_fracsec01"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_1"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "temp_mag_0"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0xffffffffffffffff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x20"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "temp_ang_0"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_2"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "soc"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_3"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "fracsec"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "generate_digest",
+          "parameters" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x00000001"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x1"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 8,
+            "source_fragment" : "digest(1, meta.digest_packet)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.send_digest_message",
+      "id" : 3,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "temp_mag_0"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.magnitude_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 181,
+            "column" : 8,
+            "source_fragment" : "magnitude_regs.read(temp_mag, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "temp_ang_0"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.phase_angle_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 182,
+            "column" : 8,
+            "source_fragment" : "phase_angle_regs.read(temp_ang, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_phasors02"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "temp_mag_0"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0xffffffffffffffff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x20"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "temp_ang_0"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 183,
+            "column" : 8,
+            "source_fragment" : "meta.digest_packet.phasors0 = temp_mag ++ temp_ang"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_soc00"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.soc_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 184,
+            "column" : 8,
+            "source_fragment" : "soc_regs.read(meta.digest_packet.soc0, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_fracsec01"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.frac_sec_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 185,
+            "column" : 8,
+            "source_fragment" : "frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_curr_soc3"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "soc"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 187,
+            "column" : 8,
+            "source_fragment" : "meta.digest_packet.curr_soc = hdr.pmu.soc"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_curr_fracsec4"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "fracsec"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 188,
+            "column" : 8,
+            "source_fragment" : "meta.digest_packet.curr_fracsec = hdr.pmu.fracsec"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_4"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_soc00"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_5"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata._digest_packet_fracsec01"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_6"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "temp_mag_0"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0xffffffffffffffff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x20"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "temp_ang_0"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_7"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "soc"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_8"]
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "fracsec"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 18,
+            "source_fragment" : "meta"
+          }
+        },
+        {
+          "op" : "generate_digest",
+          "parameters" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x00000001"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x2"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 190,
+            "column" : 8,
+            "source_fragment" : "digest(1, meta.digest_packet)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.update_registers",
+      "id" : 4,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.frac_sec_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "fracsec"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 196,
+            "column" : 8,
+            "source_fragment" : "frac_sec_regs.write((bit<32>)0, hdr.pmu.fracsec)"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.soc_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            },
+            {
+              "type" : "field",
+              "value" : ["pmu", "soc"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 199,
+            "column" : 8,
+            "source_fragment" : "soc_regs.write((bit<32>)0, hdr.pmu.soc)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_9"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : ">>",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["pmu", "phasors"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x20"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000ffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 202,
+            "column" : 41,
+            "source_fragment" : "(bit<32>)(hdr.pmu.phasors >> 32)"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.magnitude_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_9"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 202,
+            "column" : 8,
+            "source_fragment" : "magnitude_regs.write((bit<32>)0, (bit<32>)(hdr.pmu.phasors >> 32))"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_10"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["pmu", "phasors"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000ffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 205,
+            "column" : 43,
+            "source_fragment" : "(bit<32>)hdr.pmu.phasors"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.phase_angle_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_10"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 205,
+            "column" : 8,
+            "source_fragment" : "phase_angle_regs.write((bit<32>)0, (bit<32>)hdr.pmu.phasors)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.ipv4_forward",
+      "id" : 5,
       "runtime_data" : [
         {
           "name" : "dstAddr",
@@ -443,7 +1583,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 163,
+            "line" : 209,
             "column" : 8,
             "source_fragment" : "standard_metadata.egress_spec = port"
           }
@@ -462,7 +1602,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 164,
+            "line" : 210,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.srcAddr = hdr.ethernet.dstAddr"
           }
@@ -481,7 +1621,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 165,
+            "line" : 211,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.dstAddr = dstAddr"
           }
@@ -523,7 +1663,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 166,
+            "line" : 212,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
           }
@@ -531,8 +1671,61 @@
       ]
     },
     {
-      "name" : "pmu_logging188",
-      "id" : 3,
+      "name" : "pmu_logging236",
+      "id" : 6,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "prev_soc_0"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.soc_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 236,
+            "column" : 14,
+            "source_fragment" : "soc_regs.read(prev_soc, (bit<32>)0)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "prev_fracsec_0"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.frac_sec_regs"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 237,
+            "column" : 14,
+            "source_fragment" : "frac_sec_regs.read(prev_fracsec, (bit<32>)0)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "pmu_logging255",
+      "id" : 7,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -553,7 +1746,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 188,
+            "line" : 255,
             "column" : 12,
             "source_fragment" : "prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec)"
           }
@@ -576,7 +1769,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 189,
+            "line" : 256,
             "column" : 12,
             "source_fragment" : "prev_soc_regs.write((bit<32>)0, hdr.pmu.soc)"
           }
@@ -590,18 +1783,134 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 145,
+        "line" : 152,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "tbl_pmu_logging188",
+          "name" : "tbl_pmu_logging236",
           "id" : 0,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 188,
+            "line" : 236,
+            "column" : 14,
+            "source_fragment" : "soc_regs.read(prev_soc, (bit<32>)0); ..."
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [6],
+          "actions" : ["pmu_logging236"],
+          "base_default_next" : "node_5",
+          "next_tables" : {
+            "pmu_logging236" : "node_5"
+          },
+          "default_entry" : {
+            "action_id" : 6,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_send_digest_message",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 244,
+            "column" : 16,
+            "source_fragment" : "send_digest_message()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [2],
+          "actions" : ["MyIngress.send_digest_message"],
+          "base_default_next" : "tbl_update_registers",
+          "next_tables" : {
+            "MyIngress.send_digest_message" : "tbl_update_registers"
+          },
+          "default_entry" : {
+            "action_id" : 2,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_send_digest_message_0",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 250,
+            "column" : 20,
+            "source_fragment" : "send_digest_message()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [3],
+          "actions" : ["MyIngress.send_digest_message"],
+          "base_default_next" : "tbl_update_registers",
+          "next_tables" : {
+            "MyIngress.send_digest_message" : "tbl_update_registers"
+          },
+          "default_entry" : {
+            "action_id" : 3,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_update_registers",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 253,
+            "column" : 12,
+            "source_fragment" : "update_registers()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [4],
+          "actions" : ["MyIngress.update_registers"],
+          "base_default_next" : "tbl_pmu_logging255",
+          "next_tables" : {
+            "MyIngress.update_registers" : "tbl_pmu_logging255"
+          },
+          "default_entry" : {
+            "action_id" : 4,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_pmu_logging255",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 255,
             "column" : 12,
             "source_fragment" : "prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec); ..."
           },
@@ -612,14 +1921,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [3],
-          "actions" : ["pmu_logging188"],
+          "action_ids" : [7],
+          "actions" : ["pmu_logging255"],
           "base_default_next" : "MyIngress.ipv4_lpm",
           "next_tables" : {
-            "pmu_logging188" : "MyIngress.ipv4_lpm"
+            "pmu_logging255" : "MyIngress.ipv4_lpm"
           },
           "default_entry" : {
-            "action_id" : 3,
+            "action_id" : 7,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -627,10 +1936,10 @@
         },
         {
           "name" : "MyIngress.ipv4_lpm",
-          "id" : 1,
+          "id" : 5,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 169,
+            "line" : 215,
             "column" : 10,
             "source_fragment" : "ipv4_lpm"
           },
@@ -648,7 +1957,7 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [2, 1, 0],
+          "action_ids" : [5, 1, 0],
           "actions" : ["MyIngress.ipv4_forward", "MyIngress.drop", "NoAction"],
           "base_default_next" : null,
           "next_tables" : {
@@ -671,7 +1980,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 184,
+            "line" : 230,
             "column" : 12,
             "source_fragment" : "hdr.ipv4.isValid()"
           },
@@ -687,7 +1996,145 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_pmu_logging188"
+          "true_next" : "node_3"
+        },
+        {
+          "name" : "node_3",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 234,
+            "column" : 15,
+            "source_fragment" : "hdr.pmu.stat == (bit<16>)0x0"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["pmu", "stat"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x0000"
+              }
+            }
+          },
+          "true_next" : "tbl_pmu_logging236",
+          "false_next" : "MyIngress.ipv4_lpm"
+        },
+        {
+          "name" : "node_5",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 243,
+            "column" : 15,
+            "source_fragment" : "diff_soc!=0"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "!=",
+              "left" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["pmu", "soc"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "prev_soc_0"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x00000000"
+              }
+            }
+          },
+          "true_next" : "tbl_send_digest_message",
+          "false_next" : "node_7"
+        },
+        {
+          "name" : "node_7",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "pmu_logging.p4",
+            "line" : 248,
+            "column" : 19,
+            "source_fragment" : "frac_sec_diff > 20000 && prev_soc != 0"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "and",
+              "left" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : ">",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "-",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["pmu", "fracsec"]
+                          },
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "prev_fracsec_0"]
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x00004e20"
+                  }
+                }
+              },
+              "right" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "!=",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "prev_soc_0"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x00000000"
+                  }
+                }
+              }
+            }
+          },
+          "true_next" : "tbl_send_digest_message_0",
+          "false_next" : "tbl_update_registers"
         }
       ]
     },
@@ -696,7 +2143,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 200,
+        "line" : 287,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -712,7 +2159,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 214,
+        "line" : 301,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },
