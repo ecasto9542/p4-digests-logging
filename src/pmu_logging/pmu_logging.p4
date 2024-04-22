@@ -74,7 +74,6 @@ struct headers {
 
 //add in the information for a packet that you want to log
 struct digest_pmu_packet {
-  //bit<16>   idcode0;
   bit<32>   soc0;
   bit<32>   fracsec0;
   bit<64>   phasors0;
@@ -146,7 +145,7 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
 **************  I N G R E S S   P R O C E S S I N G   *******************
 *************************************************************************/
 struct phasor_t {
-  bit<32> magnitude;
+  bit<32> magnitude;from_bytes
   bit<32> angle;
 }
 control MyIngress(inout headers hdr,
@@ -165,8 +164,9 @@ control MyIngress(inout headers hdr,
     bit<32> new_reg2;
     bit<32> digest_counter;
 
-    bit<32> temp_mag;
+    bit<32> temp_magfrom_bytes;
     bit<32> temp_ang;
+
 
     action drop() {
         mark_to_drop(standard_metadata);
@@ -184,6 +184,8 @@ control MyIngress(inout headers hdr,
         soc_regs.read(meta.digest_packet.soc0, (bit<32>)0);
         frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0);
 
+        R1.write((bit<32>)0, meta.digest_packet.fracsec0);
+
         meta.digest_packet.curr_soc = hdr.pmu.soc;
         meta.digest_packet.curr_fracsec = hdr.pmu.fracsec;
 
@@ -192,6 +194,7 @@ control MyIngress(inout headers hdr,
 
     action update_registers() {
         //0 is top of stack
+        //TODO: remove frac_sec_regs if you don't need them. Double check though
         frac_sec_regs.read(new_reg2, (bit<32>)0);
         frac_sec_regs.write((bit<32>)0, hdr.pmu.fracsec);
 
@@ -239,8 +242,10 @@ control MyIngress(inout headers hdr,
             //check if diff_soc is non_zero:
             // if it is non_zero (greater than a second delay), send a digest
             // if it is zero, check the diff_frac_sec
+            // TODO: fix this algo since we could have 13.9xxx and 14.01xxx
             bit<32> diff_soc = (hdr.pmu.soc - prev_soc);
-            if(diff_soc!=0){
+
+            if(diff_soc!=0 && prev_soc != 0){
                 send_digest_message();
             }
             else{
@@ -254,7 +259,6 @@ control MyIngress(inout headers hdr,
             //if not delayed
             prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec);
             prev_soc_regs.write((bit<32>)0, hdr.pmu.soc);
-
             // if (hdr.pmu.soc < prev_soc)
             // {
             //     //log the packet
