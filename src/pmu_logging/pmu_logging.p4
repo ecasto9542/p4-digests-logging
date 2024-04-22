@@ -161,9 +161,10 @@ control MyIngress(inout headers hdr,
     register<bit<32>>(1) magnitude_regs;
     register<bit<32>>(1) phase_angle_regs;
     register<bit<32>>(1) R1;
-
+    bit<32> past_avg;
     bit<32> new_reg2;
-    bit<32> digest_counter;
+    bit<32> count=0;
+    bit<32> alpha= (8/10);
 
     bit<32> temp_mag;
     bit<32> temp_ang;
@@ -230,6 +231,7 @@ control MyIngress(inout headers hdr,
         if (hdr.ipv4.isValid()) {
             bit <32> prev_fracsec;
             bit <32> prev_soc;
+            count=count+1;
             //conditionally send data to the control plane here using the send_digest_message action
             if(hdr.pmu.stat == (bit<16>)0x0)
             {
@@ -239,14 +241,19 @@ control MyIngress(inout headers hdr,
             //check if diff_soc is non_zero:
             // if it is non_zero (greater than a second delay), send a digest
             // if it is zero, check the diff_frac_sec
+
             bit<32> diff_soc = (hdr.pmu.soc - prev_soc);
             if(diff_soc!=0){
+                R1.write((bit<32>)0, (bit<32>)420);
                 send_digest_message();
             }
             else{
                 bit<32>frac_sec_diff = hdr.pmu.fracsec - prev_fracsec;
-                if(frac_sec_diff > 20000 && prev_soc != 0) 
+                past_avg = (past_avg + frac_sec_diff)/count;
+                bit<32> threshold = (past_avg*alpha) + (frac_sec_diff*(1-alpha));
+                if(frac_sec_diff > threshold && prev_soc != 0) 
                 {
+                    R1.write((bit<32>)0, (bit<32>)threshold);
                     send_digest_message();
                 }
             }

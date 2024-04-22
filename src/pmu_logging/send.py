@@ -91,7 +91,7 @@ def parse_console_args(parser):
     parser.add_argument('--ip', default="10.0.2.2")
     parser.add_argument('--port', default=4712)
     parser.add_argument('--num_packets', default=100)
-    parser.add_argument('--drop_indexes', default='./missing-data.json')
+    parser.add_argument('--drop_indexes', default='./logged-data.json')
 
     return parser.parse_args()
 

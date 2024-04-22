@@ -24,6 +24,13 @@ class SimpleSwitchAPI(runtime_CLI.RuntimeAPI):
                                         standard_client, mc_client)
         self.sswitch_client = sswitch_client
 
+def parse_phasors(phasor_data, settings={"num_phasors": 1, "pmu_measurement_bytes": 8}):
+    phasor = {
+        "magnitude": struct.unpack('>f', phasor_data[0:int(settings["pmu_measurement_bytes"]/2)])[0],
+        "angle": math.degrees(struct.unpack('>f', phasor_data[int(settings["pmu_measurement_bytes"]/2) : settings["pmu_measurement_bytes"]])[0]),
+    }
+    return [phasor]
+
 def on_digest_recv(msg):
     print("Currently in on_digest_recv")
     #unpacking digest header, "num" is the number of messages in the digest
@@ -35,7 +42,7 @@ def on_digest_recv(msg):
 
     offset = digest_message_num_bytes
 
-    
+
 
     # loop through the messages in the digest
     for m in range(num):
@@ -45,14 +52,13 @@ def on_digest_recv(msg):
         msg_copy = msg[0:]
         #### unpack the message
         msg = msg[offset:]
-
         digest_packet = {
         "soc0": msg[0:4],
         "fracsec0": msg[4:8],
-        "phasors0": msg[8:16],
+        "phasors0": parse_phasors(msg[8:16]),
         "curr_soc": msg[16:20],
         "curr_fracsec": msg[20:24]
-        }  
+        }
         #read the individual bytes of msg to extract information you just sent from the data plane
         # """
         #     struct digest_pmu_packet {
@@ -64,6 +70,7 @@ def on_digest_recv(msg):
         #         bit<32>   curr_fracsec;
         #     }
         # """
+
         soc0= int.from_bytes(msg[0:4],byteorder="big")
         fracsec0= int.from_bytes(msg[4:8],byteorder="big")
         phasors0= int.from_bytes(msg[8:16],byteorder="big")
@@ -73,6 +80,8 @@ def on_digest_recv(msg):
         curr_soc = int.from_bytes(msg_copy[0:4], byteorder="big")
         curr_fracsec = int.from_bytes(msg_copy[4:8], byteorder="big")
 
+        print(digest_packet)
+        print(phasors0)
         print("NUM DELAYED TOTAL: " + str(delayed_packet_count))
         return digest_packet
 
@@ -104,13 +113,18 @@ def setup():
     return runtime_api, sub
 
 def listen_for_new_digests(q):
-    event_data = q.get()
-    on_digest_recv(event_data)
-    q.task_done()
+    while delayed_packet_count < 100:
+        event_data = q.get()
+        on_digest_recv(event_data)
+        q.task_done()
 
-def queue_digests(digest_queue, sub):
-    message = sub.recv()
-    digest_queue.put(message)
+
+def queue_digests(terminate_after, digest_queue, sub):
+    #### Define the controller logic below ###
+    global delayed_packet_count
+    while delayed_packet_count < terminate_after:
+        message = sub.recv()
+        digest_queue.put(message)
 
 if __name__ == "__main__":
     runtime_api, sub = setup()
@@ -118,7 +132,7 @@ if __name__ == "__main__":
     digest_message_queue = Queue()
 
     # Create the thread to listen for digest messages
-    digest_message_thread = Thread(target=queue_digests, args=(digest_message_queue, sub))
+    digest_message_thread = Thread(target=queue_digests, args=(100, digest_message_queue, sub))
     digest_message_thread.daemon = True
     digest_message_thread.start()
 
