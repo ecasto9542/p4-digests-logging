@@ -39,12 +39,13 @@ def on_digest_recv(msg):
 
     # loop through the messages in the digest
     for m in range(num):
+        #TODO: log a delayed packet to a database here after extracting out the necessary info
         global delayed_packet_count
         print("message in digest is being logged")
         delayed_packet_count=delayed_packet_count+1
-        msg_copy = msg[0:]
         #### unpack the message
         msg = msg[offset:]
+        msg_copy = msg[0:]
 
         digest_packet = {
         "soc0": msg[0:4],
@@ -52,7 +53,10 @@ def on_digest_recv(msg):
         "phasors0": msg[8:16],
         "curr_soc": msg[16:20],
         "curr_fracsec": msg[20:24]
-        }  
+        }
+        print(digest_packet["soc0"])
+        print(digest_packet["fracsec0"])
+
         #read the individual bytes of msg to extract information you just sent from the data plane
         # """
         #     struct digest_pmu_packet {
@@ -64,16 +68,15 @@ def on_digest_recv(msg):
         #         bit<32>   curr_fracsec;
         #     }
         # """
-        soc0= int.from_bytes(msg[0:4],byteorder="big")
-        fracsec0= int.from_bytes(msg[4:8],byteorder="big")
-        phasors0= int.from_bytes(msg[8:16],byteorder="big")
-        curr_soc= int.from_bytes(msg[16:20],byteorder="big")
-        curr_fracsec= int.from_bytes(msg[20:24],byteorder="big")
-
-        curr_soc = int.from_bytes(msg_copy[0:4], byteorder="big")
-        curr_fracsec = int.from_bytes(msg_copy[4:8], byteorder="big")
+        soc0= int.from_bytes(msg_copy[0:4],byteorder="big")
+        fracsec0= int.from_bytes(msg_copy[4:8],byteorder="big")
+        phasors0= int.from_bytes(msg_copy[8:16],byteorder="big")
+        curr_soc= int.from_bytes(msg_copy[16:20],byteorder="big")
+        curr_fracsec= int.from_bytes(msg_copy[20:24],byteorder="big")
 
         print("NUM DELAYED TOTAL: " + str(delayed_packet_count))
+        print(fracsec0)
+        print(curr_fracsec)
         return digest_packet
 
         msg = msg[offset:]
