@@ -75,8 +75,14 @@ def on_digest_recv(msg):
         curr_fracsec= int.from_bytes(msg_copy[20:24],byteorder="big")
 
         print("NUM DELAYED TOTAL: " + str(delayed_packet_count))
-        print(fracsec0)
+        #print(fracsec0)
+
+        print(curr_fracsec / 1000000)
         print(curr_fracsec)
+        import datetime
+        datetime_obj = datetime.datetime.fromtimestamp(curr_soc + (curr_fracsec / 1000000))
+        print("Datetime:", datetime_obj)
+
         return digest_packet
 
         msg = msg[offset:]

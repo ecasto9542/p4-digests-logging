@@ -145,7 +145,7 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
 **************  I N G R E S S   P R O C E S S I N G   *******************
 *************************************************************************/
 struct phasor_t {
-  bit<32> magnitude;from_bytes
+  bit<32> magnitude;
   bit<32> angle;
 }
 control MyIngress(inout headers hdr,
@@ -164,7 +164,7 @@ control MyIngress(inout headers hdr,
     bit<32> new_reg2;
     bit<32> digest_counter;
 
-    bit<32> temp_magfrom_bytes;
+    bit<32> temp_mag;
     bit<32> temp_ang;
 
 
