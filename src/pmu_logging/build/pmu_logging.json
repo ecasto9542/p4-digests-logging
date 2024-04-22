@@ -310,7 +310,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 326,
+        "line" : 327,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -326,7 +326,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 156,
+        "line" : 155,
         "column" : 25,
         "source_fragment" : "prev_fracsec_regs"
       },
@@ -338,7 +338,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 157,
+        "line" : 156,
         "column" : 25,
         "source_fragment" : "prev_soc_regs"
       },
@@ -350,7 +350,7 @@
       "id" : 2,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 159,
+        "line" : 158,
         "column" : 25,
         "source_fragment" : "frac_sec_regs"
       },
@@ -362,7 +362,7 @@
       "id" : 3,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 160,
+        "line" : 159,
         "column" : 25,
         "source_fragment" : "soc_regs"
       },
@@ -374,7 +374,7 @@
       "id" : 4,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 161,
+        "line" : 160,
         "column" : 25,
         "source_fragment" : "magnitude_regs"
       },
@@ -386,7 +386,7 @@
       "id" : 5,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 162,
+        "line" : 161,
         "column" : 25,
         "source_fragment" : "phase_angle_regs"
       },
@@ -398,7 +398,7 @@
       "id" : 6,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 163,
+        "line" : 162,
         "column" : 25,
         "source_fragment" : "R1"
       },
@@ -412,7 +412,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 304,
+        "line" : 305,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },
@@ -471,7 +471,7 @@
       "name" : "digest_pmu_packet",
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 193,
+        "line" : 192,
         "column" : 18,
         "source_fragment" : "meta"
       },
@@ -503,7 +503,7 @@
       "name" : "digest_pmu_packet",
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 193,
+        "line" : 192,
         "column" : 18,
         "source_fragment" : "meta"
       },
@@ -553,7 +553,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 173,
+            "line" : 172,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -583,7 +583,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 182,
+            "line" : 181,
             "column" : 8,
             "source_fragment" : "magnitude_regs.read(temp_mag, (bit<32>)0)"
           }
@@ -606,7 +606,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 183,
+            "line" : 182,
             "column" : 8,
             "source_fragment" : "phase_angle_regs.read(temp_ang, (bit<32>)0)"
           }
@@ -688,7 +688,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 184,
+            "line" : 183,
             "column" : 8,
             "source_fragment" : "meta.digest_packet.phasors0 = temp_mag ++ temp_ang"
           }
@@ -711,7 +711,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 185,
+            "line" : 184,
             "column" : 8,
             "source_fragment" : "soc_regs.read(meta.digest_packet.soc0, (bit<32>)0)"
           }
@@ -734,7 +734,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 186,
+            "line" : 185,
             "column" : 8,
             "source_fragment" : "frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0)"
           }
@@ -757,7 +757,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 188,
+            "line" : 187,
             "column" : 8,
             "source_fragment" : "R1.write((bit<32>)0, meta.digest_packet.fracsec0)"
           }
@@ -776,7 +776,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 190,
+            "line" : 189,
             "column" : 8,
             "source_fragment" : "meta.digest_packet.curr_soc = hdr.pmu.soc"
           }
@@ -795,7 +795,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 191,
+            "line" : 190,
             "column" : 8,
             "source_fragment" : "meta.digest_packet.curr_fracsec = hdr.pmu.fracsec"
           }
@@ -814,7 +814,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -833,7 +833,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -915,7 +915,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -934,7 +934,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -953,7 +953,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -972,7 +972,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 8,
             "source_fragment" : "digest(1, meta.digest_packet)"
           }
@@ -1002,7 +1002,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 182,
+            "line" : 181,
             "column" : 8,
             "source_fragment" : "magnitude_regs.read(temp_mag, (bit<32>)0)"
           }
@@ -1025,7 +1025,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 183,
+            "line" : 182,
             "column" : 8,
             "source_fragment" : "phase_angle_regs.read(temp_ang, (bit<32>)0)"
           }
@@ -1107,7 +1107,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 184,
+            "line" : 183,
             "column" : 8,
             "source_fragment" : "meta.digest_packet.phasors0 = temp_mag ++ temp_ang"
           }
@@ -1130,7 +1130,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 185,
+            "line" : 184,
             "column" : 8,
             "source_fragment" : "soc_regs.read(meta.digest_packet.soc0, (bit<32>)0)"
           }
@@ -1153,7 +1153,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 186,
+            "line" : 185,
             "column" : 8,
             "source_fragment" : "frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0)"
           }
@@ -1176,7 +1176,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 188,
+            "line" : 187,
             "column" : 8,
             "source_fragment" : "R1.write((bit<32>)0, meta.digest_packet.fracsec0)"
           }
@@ -1195,7 +1195,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 190,
+            "line" : 189,
             "column" : 8,
             "source_fragment" : "meta.digest_packet.curr_soc = hdr.pmu.soc"
           }
@@ -1214,7 +1214,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 191,
+            "line" : 190,
             "column" : 8,
             "source_fragment" : "meta.digest_packet.curr_fracsec = hdr.pmu.fracsec"
           }
@@ -1233,7 +1233,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -1252,7 +1252,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -1334,7 +1334,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -1353,7 +1353,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -1372,7 +1372,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 18,
             "source_fragment" : "meta"
           }
@@ -1391,7 +1391,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 193,
+            "line" : 192,
             "column" : 8,
             "source_fragment" : "digest(1, meta.digest_packet)"
           }
@@ -1770,7 +1770,7 @@
       ]
     },
     {
-      "name" : "pmu_logging259",
+      "name" : "pmu_logging260",
       "id" : 7,
       "runtime_data" : [],
       "primitives" : [
@@ -1792,7 +1792,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 259,
+            "line" : 260,
             "column" : 12,
             "source_fragment" : "prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec)"
           }
@@ -1815,7 +1815,7 @@
           ],
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 260,
+            "line" : 261,
             "column" : 12,
             "source_fragment" : "prev_soc_regs.write((bit<32>)0, hdr.pmu.soc)"
           }
@@ -1829,7 +1829,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 152,
+        "line" : 151,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
@@ -1869,7 +1869,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 248,
+            "line" : 249,
             "column" : 16,
             "source_fragment" : "send_digest_message()"
           },
@@ -1898,7 +1898,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 254,
+            "line" : 255,
             "column" : 20,
             "source_fragment" : "send_digest_message()"
           },
@@ -1927,7 +1927,7 @@
           "id" : 3,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 257,
+            "line" : 258,
             "column" : 12,
             "source_fragment" : "update_registers()"
           },
@@ -1940,9 +1940,9 @@
           "direct_meters" : null,
           "action_ids" : [4],
           "actions" : ["MyIngress.update_registers"],
-          "base_default_next" : "tbl_pmu_logging259",
+          "base_default_next" : "tbl_pmu_logging260",
           "next_tables" : {
-            "MyIngress.update_registers" : "tbl_pmu_logging259"
+            "MyIngress.update_registers" : "tbl_pmu_logging260"
           },
           "default_entry" : {
             "action_id" : 4,
@@ -1952,11 +1952,11 @@
           }
         },
         {
-          "name" : "tbl_pmu_logging259",
+          "name" : "tbl_pmu_logging260",
           "id" : 4,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 259,
+            "line" : 260,
             "column" : 12,
             "source_fragment" : "prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec); ..."
           },
@@ -1968,10 +1968,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [7],
-          "actions" : ["pmu_logging259"],
+          "actions" : ["pmu_logging260"],
           "base_default_next" : "MyIngress.ipv4_lpm",
           "next_tables" : {
-            "pmu_logging259" : "MyIngress.ipv4_lpm"
+            "pmu_logging260" : "MyIngress.ipv4_lpm"
           },
           "default_entry" : {
             "action_id" : 7,
@@ -2075,7 +2075,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 247,
+            "line" : 248,
             "column" : 15,
             "source_fragment" : "diff_soc!=0 && prev_soc != 0"
           },
@@ -2141,7 +2141,7 @@
           "id" : 3,
           "source_info" : {
             "filename" : "pmu_logging.p4",
-            "line" : 252,
+            "line" : 253,
             "column" : 19,
             "source_fragment" : "frac_sec_diff > 20000 && prev_soc != 0"
           },
@@ -2209,7 +2209,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 290,
+        "line" : 291,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -2225,7 +2225,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "pmu_logging.p4",
-        "line" : 304,
+        "line" : 305,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },
