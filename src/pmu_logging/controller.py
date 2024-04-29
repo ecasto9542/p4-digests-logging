@@ -9,9 +9,10 @@ import math
 from threading import Thread
 from queue import Queue
 import time
+import datetime
 
 # Global variables
-digest_message_num_bytes = 8
+digest_message_num_bytes = 24
 delayed_packet_count = 0
 
 class SimpleSwitchAPI(runtime_CLI.RuntimeAPI):
@@ -24,8 +25,14 @@ class SimpleSwitchAPI(runtime_CLI.RuntimeAPI):
                                         standard_client, mc_client)
         self.sswitch_client = sswitch_client
 
+def parse_phasors(phasor_data, settings={"num_phasors": 1, "pmu_measurement_bytes": 8}):
+    phasor = {
+        "magnitude": struct.unpack('>f', phasor_data[0:4])[0],
+        "angle": math.degrees(struct.unpack('>f', phasor_data[4:])[0]),
+    }
+    return [phasor]
+
 def on_digest_recv(msg):
-    print("Currently in on_digest_recv")
     #unpacking digest header, "num" is the number of messages in the digest
     _, _, ctx_id, list_id, buffer_id, num = struct.unpack("<iQiiQi", msg[:32])
 
@@ -44,7 +51,6 @@ def on_digest_recv(msg):
         print("message in digest is being logged")
         delayed_packet_count=delayed_packet_count+1
         #### unpack the message
-        msg = msg[offset:]
         msg_copy = msg[0:]
 
         digest_packet = {
@@ -52,40 +58,29 @@ def on_digest_recv(msg):
         "fracsec0": msg[4:8],
         "phasors0": msg[8:16],
         "curr_soc": msg[16:20],
-        "curr_fracsec": msg[20:24]
+        "curr_fracsec": msg[20:24],
+        "destination_ip": msg[24:28]
         }
-        print(digest_packet["soc0"])
-        print(digest_packet["fracsec0"])
 
-        #read the individual bytes of msg to extract information you just sent from the data plane
-        # """
-        #     struct digest_pmu_packet {
-        #         //bit<16>   idcode0;
-        #         bit<32>   soc0;
-        #         bit<32>   fracsec0;
-        #         bit<64>   phasors0;
-        #         bit<32>   curr_soc;
-        #         bit<32>   curr_fracsec;
-        #     }
-        # """
         soc0= int.from_bytes(msg_copy[0:4],byteorder="big")
         fracsec0= int.from_bytes(msg_copy[4:8],byteorder="big")
-        phasors0= int.from_bytes(msg_copy[8:16],byteorder="big")
+        temp = int.from_bytes(msg_copy[8:12], byteorder='big')
+        print('test: ')
+        print(int.from_bytes(msg_copy[8:12], byteorder='big'))
+        phasors0= parse_phasors(msg_copy[8:16])
         curr_soc= int.from_bytes(msg_copy[16:20],byteorder="big")
         curr_fracsec= int.from_bytes(msg_copy[20:24],byteorder="big")
 
         print("NUM DELAYED TOTAL: " + str(delayed_packet_count))
-        #print(fracsec0)
 
-        print(curr_fracsec / 1000000)
-        print(curr_fracsec)
-        import datetime
         datetime_obj = datetime.datetime.fromtimestamp(curr_soc + (curr_fracsec / 1000000))
         print("Datetime:", datetime_obj)
-
-        return digest_packet
-
+        print("Phasors: ", phasors0)
+        with open('log.txt', 'a') as file:
+            print(f"Datetime: {datetime_obj}", file=file)
+            print(f"Phasors: {phasors0}", file=file)
         msg = msg[offset:]
+        return digest_packet
 
 def setup():
     args = runtime_CLI.get_parser().parse_args()

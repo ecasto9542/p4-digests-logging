@@ -160,6 +160,8 @@ control MyIngress(inout headers hdr,
     register<bit<32>>(1) magnitude_regs;
     register<bit<32>>(1) phase_angle_regs;
     register<bit<32>>(1) R1;
+    register<bit<32>>(1) R2;
+
 
     bit<32> new_reg2;
     bit<32> digest_counter;
@@ -184,10 +186,13 @@ control MyIngress(inout headers hdr,
         soc_regs.read(meta.digest_packet.soc0, (bit<32>)0);
         frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0);
 
-        R1.write((bit<32>)0, meta.digest_packet.fracsec0);
 
         meta.digest_packet.curr_soc = hdr.pmu.soc;
         meta.digest_packet.curr_fracsec = hdr.pmu.fracsec;
+
+        R1.write((bit<32>)0, temp_mag);
+        R2.write((bit<32>)0, (bit<32>)(meta.digest_packet.phasors0>>32));
+
 
         digest(1, meta.digest_packet);
     }

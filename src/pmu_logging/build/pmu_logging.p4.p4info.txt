@@ -175,6 +175,21 @@ registers {
   }
   size: 1
 }
+registers {
+  preamble {
+    id: 383764456
+    name: "MyIngress.R2"
+    alias: "R2"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 1
+}
 digests {
   preamble {
     id: 392008662
