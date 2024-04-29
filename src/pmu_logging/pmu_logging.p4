@@ -56,7 +56,7 @@ header pmu_t {
     bit<32>   soc;
     bit<32>   fracsec;
     bit<16>   stat;
-    bit<64>   phasors;
+    bit<192>   phasors; // 64 * 3 phasors
     bit<16>   freq;
     bit<16>   dfreq;
     bit<32>   analog;
@@ -77,6 +77,8 @@ struct digest_pmu_packet {
   bit<32>   soc0;
   bit<32>   fracsec0;
   bit<64>   phasors0;
+  //bit<64>   phasors1;
+  //bit<64>   phasors2;
   bit<32>   curr_soc;
   bit<32>   curr_fracsec;
 }
@@ -182,13 +184,14 @@ control MyIngress(inout headers hdr,
 
         magnitude_regs.read(temp_mag, (bit<32>)0);
         phase_angle_regs.read(temp_ang, (bit<32>)0);
-        meta.digest_packet.phasors0 = temp_mag ++ temp_ang;
+        //meta.digest_packet.phasors0 = temp_mag ++ temp_ang;
         soc_regs.read(meta.digest_packet.soc0, (bit<32>)0);
         frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0);
 
 
         meta.digest_packet.curr_soc = hdr.pmu.soc;
         meta.digest_packet.curr_fracsec = hdr.pmu.fracsec;
+        //meta.digest_packet.phasors0 = hdr.pmu.phasors;
 
         R1.write((bit<32>)0, temp_mag);
         R2.write((bit<32>)0, (bit<32>)(meta.digest_packet.phasors0>>32));
@@ -205,7 +208,8 @@ control MyIngress(inout headers hdr,
 
         soc_regs.read(new_reg2, (bit<32>)0);
         soc_regs.write((bit<32>)0, hdr.pmu.soc);
-
+        
+        //don't need this
         magnitude_regs.read(new_reg2, (bit<32>)0);
         magnitude_regs.write((bit<32>)0, (bit<32>)(hdr.pmu.phasors >> 32));
 
