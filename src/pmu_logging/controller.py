@@ -14,9 +14,9 @@ import csv
 import ipaddress
 
 # Global variables
-digest_message_num_bytes = 24
+digest_message_num_bytes = 40
 delayed_packet_count = 0
-
+counter = 0
 class SimpleSwitchAPI(runtime_CLI.RuntimeAPI):
     @staticmethod
     def get_thrift_services():
@@ -35,6 +35,7 @@ def parse_phasors(phasor_data, settings={"num_phasors": 1, "pmu_measurement_byte
     return [phasor]
 
 def on_digest_recv(msg):
+    print('received a message')
     global delayed_packet_count
     #unpacking digest header, "num" is the number of messages in the digest
     _, _, ctx_id, list_id, buffer_id, num = struct.unpack("<iQiiQi", msg[:32])
@@ -49,11 +50,12 @@ def on_digest_recv(msg):
 
     # loop through the messages in the digest
     for m in range(num):
+        print('got something')
         #TODO: log a delayed packet to a database here after extracting out the necessary info
         delayed_packet_count=delayed_packet_count+1
         #### unpack the message
         msg_copy = msg[0:]
-
+        
         digest_packet = {
         "soc0": msg[0:4],
         "fracsec0": msg[4:8],
@@ -87,7 +89,8 @@ def on_digest_recv(msg):
                 writer.writerow(["Datetime", "Phasor 1", "Source IP", "Destination IP"])
             writer.writerow([datetime_obj, phasors0, src_ip, dest_ip])
         msg = msg[offset:]
-        return digest_packet
+        
+        #return digest_packet
 
 def setup():
     args = runtime_CLI.get_parser().parse_args()
@@ -115,9 +118,12 @@ def setup():
     return runtime_api, sub
 
 def listen_for_new_digests(q):
-    event_data = q.get()
-    on_digest_recv(event_data)
-    q.task_done()
+    global counter
+    while counter < 10:
+        counter += 1
+        event_data = q.get()
+        on_digest_recv(event_data)
+        q.task_done()
 
 def queue_digests(digest_queue, sub):
     message = sub.recv()

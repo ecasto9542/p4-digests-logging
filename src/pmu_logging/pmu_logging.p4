@@ -82,10 +82,13 @@ struct digest_pmu_packet {
   bit<64>   phasors0;
   bit<64>   phasors1;
   bit<64>   phasors2;
+/*
   bit<32>   curr_soc;
   bit<32>   curr_fracsec;
+*/
   bit<32>   srcAddr;
   bit<32>   dstAddr;
+  
 }
 
 struct metadata {
@@ -147,7 +150,6 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
     apply {  }
 }
 
-
 /*************************************************************************
 **************  I N G R E S S   P R O C E S S I N G   *******************
 *************************************************************************/
@@ -159,8 +161,6 @@ control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
 
-    register<bit<32>>(1) prev_fracsec_regs;
-    register<bit<32>>(1) prev_soc_regs;
 
     register<bit<32>>(1) frac_sec_regs;
     register<bit<32>>(1) soc_regs;
@@ -184,52 +184,23 @@ control MyIngress(inout headers hdr,
     action send_digest_message() {
         //set meta.digest_packet equal to the information that you want to send to the control plane
         //meta.digest_packet.some_number = (bit<32>)1234;
-
-        
-        magnitude_regs.read(temp_mag, (bit<32>)0);
-        phase_angle_regs.read(temp_ang, (bit<32>)0);
-        meta.digest_packet.phasors0 = temp_mag ++ temp_ang;
-        soc_regs.read(meta.digest_packet.soc0, (bit<32>)0);
-        frac_sec_regs.read(meta.digest_packet.fracsec0, (bit<32>)0);
-
-
-        meta.digest_packet.curr_soc = hdr.pmu.soc;
-        meta.digest_packet.curr_fracsec = hdr.pmu.fracsec;
-        //meta.digest_packet.phasors0 = (bit<32>)(hdr.pmu.phasors >> 128)
-        //meta.digest_packet.phasors1 = (bit<32>)(hdr.pmu.phasors >> 64)
-
+        bit<32> temp;
+        soc_regs.read(temp, (bit<32>)0);
         meta.digest_packet.phasors0 = hdr.pmu.phasors0;
         meta.digest_packet.phasors1 = hdr.pmu.phasors1;
         meta.digest_packet.phasors2 = hdr.pmu.phasors2;
 
-
         meta.digest_packet.srcAddr = hdr.ipv4.srcAddr;
         meta.digest_packet.dstAddr = hdr.ipv4.dstAddr;
-
-        R1.write((bit<32>)0, meta.digest_packet.dstAddr);
-        R2.write((bit<32>)0, (bit<32>)(meta.digest_packet.phasors0>>32));
-
-
+        
+        meta.digest_packet.soc0 = hdr.pmu.soc;
+        meta.digest_packet.fracsec0 = hdr.pmu.fracsec;
         digest(1, meta.digest_packet);
     }
 
     action update_registers() {
-        //0 is top of stack
-        //TODO: remove frac_sec_regs if you don't need them. Double check though
-        //frac_sec_regs.read(new_reg2, (bit<32>)0);
         frac_sec_regs.write((bit<32>)0, hdr.pmu.fracsec);
-
-        ///soc_regs.read(new_reg2, (bit<32>)0);
         soc_regs.write((bit<32>)0, hdr.pmu.soc);
-        
-        //don't need this
-        /*
-        magnitude_regs.read(new_reg2, (bit<32>)0);
-        magnitude_regs.write((bit<32>)0, (bit<32>)(hdr.pmu.phasors >> 32));
-
-        phase_angle_regs.read(new_reg2, (bit<32>)0);
-        phase_angle_regs.write((bit<32>)0, (bit<32>)hdr.pmu.phasors);
-        */
     }
 
     action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
@@ -254,58 +225,27 @@ control MyIngress(inout headers hdr,
 
     apply {
 
-        if (hdr.ipv4.isValid()) {
-            //trying some funky stuff
-            //bullshit.write((bit<32>)0, standard_metadata.ingress_global_timestamp);
-            
+        if (hdr.ipv4.isValid()) {            
             bit <32> prev_fracsec;
             bit <32> prev_soc;
-            //conditionally send data to the control plane here using the send_digest_message action
-            //don't need this, this is for generated packets
-            if(hdr.pmu.stat == (bit<16>)0x0)
-            {
-              soc_regs.read(prev_soc, (bit<32>)0);
-              frac_sec_regs.read(prev_fracsec, (bit<32>)0);
-            
-            //check if diff_soc is non_zero:
-            // if it is non_zero (greater than a second delay), send a digest
-            // if it is zero, check the diff_frac_sec
-            // TODO: fix this algo since we could have 13.9xxx and 14.01xxx
-            bit<32> diff_soc = (hdr.pmu.soc - prev_soc);
 
-            if(diff_soc!=0 && prev_soc != 0){
+            //conditionally send data to the control plane here using the send_digest_message action
+            soc_regs.read(prev_soc, (bit<32>)0);
+            frac_sec_regs.read(prev_fracsec, (bit<32>)0);
+
+            if (hdr.pmu.soc < prev_soc)
+            {
+                //log the packet
+                send_digest_message();
+            }
+            else if (hdr.pmu.fracsec < prev_fracsec)
+            {
+                //log packet
                 send_digest_message();
             }
             else{
-                bit<32>frac_sec_diff = hdr.pmu.fracsec - prev_fracsec;
-                if(frac_sec_diff > 20000 && prev_soc != 0) 
-                {
-                    send_digest_message();
-                }
+                update_registers();
             }
-            update_registers();
-            //if not delayed
-            prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec);
-            prev_soc_regs.write((bit<32>)0, hdr.pmu.soc);
-            // if (hdr.pmu.soc < prev_soc)
-            // {
-            //     //log the packet
-            //     send_digest_message();
-            // }
-            // else if (hdr.pmu.fracsec < prev_fracsec)
-            // {
-            //     //log packet
-            //     send_digest_message();
-            // }
-            // //forward packet
-            // prev_fracsec_regs.write((bit<32>)0, hdr.pmu.fracsec);
-            // prev_soc_regs.write((bit<32>)0, hdr.pmu.soc);
-
-            // //difference between packet arrival times in microseconds
-            // bit<32> frac_sec_diff = soc_diff_in_frac_sec - temp_frac_sec + hdr.pmu.fracsec;
-            
-            }
-
             ipv4_lpm.apply();
         }
     }
