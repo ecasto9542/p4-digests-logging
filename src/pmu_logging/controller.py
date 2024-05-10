@@ -10,6 +10,8 @@ from threading import Thread
 from queue import Queue
 import time
 import datetime
+import csv
+import ipaddress
 
 # Global variables
 digest_message_num_bytes = 24
@@ -33,6 +35,7 @@ def parse_phasors(phasor_data, settings={"num_phasors": 1, "pmu_measurement_byte
     return [phasor]
 
 def on_digest_recv(msg):
+    global delayed_packet_count
     #unpacking digest header, "num" is the number of messages in the digest
     _, _, ctx_id, list_id, buffer_id, num = struct.unpack("<iQiiQi", msg[:32])
 
@@ -47,8 +50,6 @@ def on_digest_recv(msg):
     # loop through the messages in the digest
     for m in range(num):
         #TODO: log a delayed packet to a database here after extracting out the necessary info
-        global delayed_packet_count
-        print("message in digest is being logged")
         delayed_packet_count=delayed_packet_count+1
         #### unpack the message
         msg_copy = msg[0:]
@@ -59,26 +60,32 @@ def on_digest_recv(msg):
         "phasors0": msg[8:16],
         "curr_soc": msg[16:20],
         "curr_fracsec": msg[20:24],
-        "destination_ip": msg[24:28]
+        "src_ip": msg[24:28],
+        "dest_ip": msg[28:32]
         }
 
         soc0= int.from_bytes(msg_copy[0:4],byteorder="big")
         fracsec0= int.from_bytes(msg_copy[4:8],byteorder="big")
         temp = int.from_bytes(msg_copy[8:12], byteorder='big')
-        print('test: ')
-        print(int.from_bytes(msg_copy[8:12], byteorder='big'))
+
         phasors0= parse_phasors(msg_copy[8:16])
         curr_soc= int.from_bytes(msg_copy[16:20],byteorder="big")
         curr_fracsec= int.from_bytes(msg_copy[20:24],byteorder="big")
+        src_ip = ipaddress.ip_address(msg_copy[24:28])
+        dest_ip = ipaddress.ip_address(msg_copy[28:32])
 
         print("NUM DELAYED TOTAL: " + str(delayed_packet_count))
 
         datetime_obj = datetime.datetime.fromtimestamp(curr_soc + (curr_fracsec / 1000000))
         print("Datetime:", datetime_obj)
         print("Phasors: ", phasors0)
-        with open('log.txt', 'a') as file:
-            print(f"Datetime: {datetime_obj}", file=file)
-            print(f"Phasors: {phasors0}", file=file)
+        print("Source ip:", src_ip)
+        print("Dest ip:", dest_ip)
+        with open('log.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            if file.tell() == 0:
+                writer.writerow(["Datetime", "Phasor 1", "Source IP", "Destination IP"])
+            writer.writerow([datetime_obj, phasors0, src_ip, dest_ip])
         msg = msg[offset:]
         return digest_packet
 
