@@ -20,11 +20,17 @@ serverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serverSock.bind((UDP_IP_ADDRESS, UDP_PORT_NO))
 
 def parse_phasors(phasor_data, settings={"num_phasors": 1, "pmu_measurement_bytes": 8}):
-    phasor = {
-        "magnitude": struct.unpack('>f', phasor_data[0:int(settings["pmu_measurement_bytes"]/2)])[0],
-        "angle": math.degrees(struct.unpack('>f', phasor_data[int(settings["pmu_measurement_bytes"]/2) : settings["pmu_measurement_bytes"]])[0]),
-    }
-    return [phasor]
+    phasor_list = []
+    print(len(phasor_data))
+    for i in range(settings["num_phasors"]):
+        print("Start Marker Bytes: " + str(i * int(settings["pmu_measurement_bytes"])))
+        start_marker = i * int(settings["pmu_measurement_bytes"])
+        phasor = {
+            "magnitude": struct.unpack('>f', phasor_data[start_marker:start_marker + int(settings["pmu_measurement_bytes"]/2)])[0],
+            "angle": math.degrees(struct.unpack('>f', phasor_data[(start_marker + int(settings["pmu_measurement_bytes"]/2)) : start_marker + settings["pmu_measurement_bytes"]])[0]),
+        }
+        phasor_list.append(phasor)
+    return phasor_list
 
 def pmu_packet_parser(data, settings={"pmu_measurement_bytes": 8, "num_phasors": 1, "freq_bytes": 2, "dfreq_bytes": 2}):
     freq_start_byte = 16 + settings["num_phasors"] * settings["pmu_measurement_bytes"]
@@ -41,7 +47,7 @@ def pmu_packet_parser(data, settings={"pmu_measurement_bytes": 8, "num_phasors":
         "soc": int.from_bytes(data[6:10], byteorder="big"),
         "frac_sec": int.from_bytes(data[10:14], byteorder="big"),
         "stat": int.from_bytes(data[14:16], byteorder="big"),
-        "phasors": parse_phasors(data[16:16 + settings["pmu_measurement_bytes"]], {"num_phasors": settings["num_phasors"], "pmu_measurement_bytes": settings["pmu_measurement_bytes"]}),
+        "phasors": parse_phasors(data[16:16 + settings["pmu_measurement_bytes"] * settings["num_phasors"]], {"num_phasors": settings["num_phasors"], "pmu_measurement_bytes": settings["pmu_measurement_bytes"]}),
         "freq": data[freq_start_byte:dfreq_start_byte],
         "dfreq": data[dfreq_start_byte:analog_start_byte],
         "analog": data[analog_start_byte:digital_start_byte],
@@ -74,7 +80,8 @@ def queue_pmu_packets(q, terminate_after):
 
 def process_pmu_packet(raw_pmu_packet, received_counter):
     global sorted_pmus
-    pmu_data = pmu_packet_parser(raw_pmu_packet)
+    pmu_data = pmu_packet_parser(raw_pmu_packet, settings={"pmu_measurement_bytes": 8, "num_phasors": 3, "freq_bytes": 2, "dfreq_bytes": 2})
+    print(pmu_data["phasors"]);
     pmu_data["received_at"] = datetime.now()
     sorted_pmus.insert(pmu_data)
     #print(str(received_counter) + " : " + str(pmu_data["sync"]) + " | " + "Magnitude: " + str(pmu_data["phasors"][0]["magnitude"]) + " | Phase_angle: " + str(pmu_data["phasors"][0]["angle"]))

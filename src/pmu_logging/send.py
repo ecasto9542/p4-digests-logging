@@ -16,7 +16,7 @@ from datetime import datetime
 
 index = 0
 csv_sent_time_data = [["index", "sent_at"]]
-def generate_packet(time, voltage, angle, settings={"pmu_measurement_bytes": 8, "destination_ip": "192.168.0.100", "destination_port": 4712}):
+def generate_packet(time, voltages, angles, settings={"pmu_measurement_bytes": 8, "destination_ip": "192.168.0.100", "destination_port": 4712}):
     # Define the PMU packet as a byte string
     datetime_str = str(time)[:26]
     global index
@@ -47,9 +47,18 @@ def generate_packet(time, voltage, angle, settings={"pmu_measurement_bytes": 8, 
     stat = b'\x00\x00'
 
     # 4 or 8 byte x number of phasors (see doc, 8 is for float)
-    voltage_bytes = struct.pack('>f', voltage)
-    angle_bytes = struct.pack('>f', math.radians(angle))
-    phasors = voltage_bytes + angle_bytes
+    voltage_bytes0 = struct.pack('>f', voltages[0])
+    angle_bytes0 = struct.pack('>f', math.radians(angles[0]))
+
+    voltage_bytes1 = struct.pack('>f', voltages[1])
+    angle_bytes1 = struct.pack('>f', math.radians(angles[1]))
+
+    voltage_bytes2 = struct.pack('>f', voltages[2])
+    angle_bytes2 = struct.pack('>f', math.radians(angles[2]))
+
+    # 24 bytes total, first 8 bytes for first phasor, next 8 bytes for next phasor, and so on
+    phasors = voltage_bytes0 + angle_bytes0 + voltage_bytes1 + angle_bytes1 + voltage_bytes2 + angle_bytes2
+
 
     # 2 byte, assumed 60
     freq = b'\x09\xC4'
@@ -125,6 +134,6 @@ if __name__ == "__main__":
         #sending to loopback as opposed to switch
         settings_obj = {"destination_ip": "127.0.0.1" if i in drop_indexes else  args.ip, "destination_port": int(args.port)}
         time.sleep(0.017)
-        generate_packet(pmu_csv_data["times"][i], pmu_csv_data["magnitudes"][0][i], pmu_csv_data["phase_angles"][0][i], settings_obj)
+        generate_packet(pmu_csv_data["times"][i], [pmu_csv_data["magnitudes"][0][i], pmu_csv_data["magnitudes"][1][i], pmu_csv_data["magnitudes"][2][i]], [pmu_csv_data["phase_angles"][0][i], pmu_csv_data["phase_angles"][1][i], pmu_csv_data["phase_angles"][2][i]], settings_obj)
 
     # generate_packets()
