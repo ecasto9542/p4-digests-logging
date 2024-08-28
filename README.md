@@ -1,5 +1,5 @@
 # p4-digests
-This is the repo containing my work for my Honors Thesis.
+This is the repo containing my work for my Honors Thesis, adapted from labmate Jack Norris
 
 Please run this in the VM provided by P4 in this p4 repo: https://github.com/p4lang/tutorials
 
