@@ -1,10 +1,11 @@
 # p4-digests
-This is the repo containing my work for my Honors Thesis, adapted from labmate Jack Norris
+This is the repo containing my work for my Honors Thesis.
+Folder pmu_logging is my stuff; folder pmu_example is the work of my labmate Jack Norris
 
 Please run this in the VM provided by P4 in this p4 repo: https://github.com/p4lang/tutorials
 
 Steps:
-- Navigate to an item in the src folder (my stuff is in pmu_logging)
+- Navigate to an item in the src folder (pmu_logging)
 - Call `make run`
 - Dont forget to load table rules using simple_switch_CLI < rules.cmd
 - xterm into h1, s1, and h2
