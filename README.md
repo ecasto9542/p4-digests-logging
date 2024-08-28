@@ -1,10 +1,10 @@
 # p4-digests
 This is the repo containing my work for my Honors Thesis.
 
-Barebones repo for getting started sending and receiving digest messages on a p4 bmv2 switch. Please run this in the VM provided by P4 in this p4 repo: https://github.com/p4lang/tutorials
+Please run this in the VM provided by P4 in this p4 repo: https://github.com/p4lang/tutorials
 
-General Steps:
-- Navigate to an item in the src folder (boilerplate, pmu_example, e.t.c)
+Steps:
+- Navigate to an item in the src folder (my stuff is in pmu_logging)
 - Call `make run`
 - Dont forget to load table rules using simple_switch_CLI < rules.cmd
 - xterm into h1, s1, and h2
