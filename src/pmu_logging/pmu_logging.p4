@@ -168,7 +168,7 @@ control MyIngress(inout headers hdr,
     register<bit<32>>(1) phase_angle_regs;
     register<bit<32>>(1) R1;
     register<bit<32>>(1) R2;
-    //register<bit<48>>(1) bullshit;
+    //register<bit<48>>(1) stuff;
 
     bit<32> new_reg2;
     bit<32> digest_counter;
@@ -229,20 +229,23 @@ control MyIngress(inout headers hdr,
             bit <32> prev_fracsec;
             bit <32> prev_soc;
 
-            //conditionally send data to the control plane here using the send_digest_message action
+            //conditionally send data to the control plane here using the send_digest_message action        
             soc_regs.read(prev_soc, (bit<32>)0);
             frac_sec_regs.read(prev_fracsec, (bit<32>)0);
 
-            if (hdr.pmu.soc < prev_soc)
+            if (hdr.pmu.soc < prev_soc) 
             {
-                //log the packet
+                //log the packet            
                 send_digest_message();
             }
-            else if (hdr.pmu.fracsec < prev_fracsec)
+            else if (hdr.pmu.soc == prev_soc) 
             {
-                //log packet
-                send_digest_message();
-            }
+                if (hdr.pmu.fracsec > 0 && hdr.pmu.fracsec < prev_fracsec) {
+                    send_digest_message();
+                } else {
+                    update_registers();
+                }
+            } 
             else{
                 update_registers();
             }

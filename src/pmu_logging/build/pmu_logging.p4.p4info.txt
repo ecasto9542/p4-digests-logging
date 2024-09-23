@@ -72,36 +72,6 @@ actions {
 }
 registers {
   preamble {
-    id: 384949210
-    name: "MyIngress.prev_fracsec_regs"
-    alias: "prev_fracsec_regs"
-  }
-  type_spec {
-    bitstring {
-      bit {
-        bitwidth: 32
-      }
-    }
-  }
-  size: 1
-}
-registers {
-  preamble {
-    id: 383769944
-    name: "MyIngress.prev_soc_regs"
-    alias: "prev_soc_regs"
-  }
-  type_spec {
-    bitstring {
-      bit {
-        bitwidth: 32
-      }
-    }
-  }
-  size: 1
-}
-registers {
-  preamble {
     id: 379124554
     name: "MyIngress.frac_sec_regs"
     alias: "frac_sec_regs"
@@ -237,7 +207,27 @@ type_info {
         }
       }
       members {
-        name: "curr_soc"
+        name: "phasors1"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 64
+            }
+          }
+        }
+      }
+      members {
+        name: "phasors2"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 64
+            }
+          }
+        }
+      }
+      members {
+        name: "srcAddr"
         type_spec {
           bitstring {
             bit {
@@ -247,7 +237,7 @@ type_info {
         }
       }
       members {
-        name: "curr_fracsec"
+        name: "dstAddr"
         type_spec {
           bitstring {
             bit {

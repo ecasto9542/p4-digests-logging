@@ -46,48 +46,43 @@ def on_digest_recv(msg):
 
     offset = digest_message_num_bytes
 
-    
+
 
     # loop through the messages in the digest
     for m in range(num):
         print('got something')
         #TODO: log a delayed packet to a database here after extracting out the necessary info
-        delayed_packet_count=delayed_packet_count+1
+
+
+        delayed_packet_count += 1
+
         #### unpack the message
-        msg_copy = msg[0:]
-        
-        digest_packet = {
-        "soc0": msg[0:4],
-        "fracsec0": msg[4:8],
-        "phasors0": msg[8:16],
-        "curr_soc": msg[16:20],
-        "curr_fracsec": msg[20:24],
-        "src_ip": msg[24:28],
-        "dest_ip": msg[28:32]
-        }
-
-        soc0= int.from_bytes(msg_copy[0:4],byteorder="big")
-        fracsec0= int.from_bytes(msg_copy[4:8],byteorder="big")
-        temp = int.from_bytes(msg_copy[8:12], byteorder='big')
-
-        phasors0= parse_phasors(msg_copy[8:16])
-        curr_soc= int.from_bytes(msg_copy[16:20],byteorder="big")
-        curr_fracsec= int.from_bytes(msg_copy[20:24],byteorder="big")
-        src_ip = ipaddress.ip_address(msg_copy[24:28])
-        dest_ip = ipaddress.ip_address(msg_copy[28:32])
+        curr_soc = int.from_bytes(msg[0:4], byteorder="big")
+        curr_fracsec = int.from_bytes(msg[4:8], byteorder="big")
+        phasors0 = parse_phasors(msg[8:16])
+        phasors1 = parse_phasors(msg[16:24])
+        phasors2 = parse_phasors(msg[24:32])
+        src_ip = ipaddress.ip_address(msg[32:36])
+        dest_ip = ipaddress.ip_address(msg[36:40])
 
         print("NUM DELAYED TOTAL: " + str(delayed_packet_count))
 
         datetime_obj = datetime.datetime.fromtimestamp(curr_soc + (curr_fracsec / 1000000))
+
         print("Datetime:", datetime_obj)
-        print("Phasors: ", phasors0)
-        print("Source ip:", src_ip)
-        print("Dest ip:", dest_ip)
+        print("Phasors 0: ", phasors0)
+        print("Phasors 1: ", phasors1)
+        print("Phasors 2: ", phasors2)
+        print("Source IP:", src_ip)
+        print("Destination IP:", dest_ip)
+
+        # Write to CSV
         with open('log.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
-                writer.writerow(["Datetime", "Phasor 1", "Source IP", "Destination IP"])
-            writer.writerow([datetime_obj, phasors0, src_ip, dest_ip])
+                writer.writerow(["Datetime", "Phasor 1", "Phasor 2", "Phasor 3", "Source IP", "Destination IP"])
+            writer.writerow([datetime_obj, phasors0, phasors1, phasors2, src_ip, dest_ip])
+
         msg = msg[offset:]
         
         #return digest_packet
