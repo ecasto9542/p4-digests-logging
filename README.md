@@ -1,8 +1,11 @@
 # p4-digests
-Barebones repo for getting started sending and receiving digest messages on a p4 bmv2 switch. Please run this in the VM provided by P4 in this p4 repo: https://github.com/p4lang/tutorials
+This is the repo containing my work for my Honors Thesis.
+Folder pmu_logging is my stuff; folder pmu_example is the work of my labmate Jack Norris
 
-General Steps:
-- Navigate to an item in the src folder (boilerplate, pmu_example, e.t.c)
+Please run this in the VM provided by P4 in this p4 repo: https://github.com/p4lang/tutorials
+
+Steps:
+- Navigate to an item in the src folder (pmu_logging)
 - Call `make run`
 - Dont forget to load table rules using simple_switch_CLI < rules.cmd
 - xterm into h1, s1, and h2
@@ -27,7 +30,3 @@ To try the pmu_example:
 - Re-run the send.py script
 - Notice that s1 generate packets to send to h2
 - Effectively, if you have 5 missing indexes in your missing indexes file, you only send 95 packets from send.py. Receive.py receives 100 packets, meaning the switch made up the difference
-
-Testing eva committing
-
-Testing eva committing again
