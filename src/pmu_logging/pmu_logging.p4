@@ -224,7 +224,6 @@ control MyIngress(inout headers hdr,
     }
 
     apply {
-
         if (hdr.ipv4.isValid()) {            
             bit <32> prev_fracsec;
             bit <32> prev_soc;
@@ -233,20 +232,15 @@ control MyIngress(inout headers hdr,
             soc_regs.read(prev_soc, (bit<32>)0);
             frac_sec_regs.read(prev_fracsec, (bit<32>)0);
 
-            if (hdr.pmu.soc < prev_soc) 
-            {
-                //log the packet            
+            // Combine SOC and fracsec to handle edge cases for full second values
+            bit<64> current_time = (bit<64>)hdr.pmu.soc << 32 | (bit<64>)hdr.pmu.fracsec;
+            bit<64> prev_time = (bit<64>)prev_soc << 32 | (bit<64>)prev_fracsec;
+
+            if (current_time < prev_time) {
+                //log the packet
                 send_digest_message();
-            }
-            else if (hdr.pmu.soc == prev_soc) 
-            {
-                if (hdr.pmu.fracsec > 0 && hdr.pmu.fracsec < prev_fracsec) {
-                    send_digest_message();
-                } else {
-                    update_registers();
-                }
             } 
-            else{
+            else {
                 update_registers();
             }
             ipv4_lpm.apply();
