@@ -1,6 +1,6 @@
 # p4-digests
-This is the repo containing my work for my Honors Thesis.
-Folder pmu_logging is my stuff; folder pmu_example is the work of my labmate Jack Norris
+This is the repo containing my work for this paper: [In-Network Logging and Missing Data Recovery In PMU Networks via Programmable Data Plane Devices](https://ieeexplore.ieee.org/document/10520614)
+Folder pmu_logging is my contribution; folder pmu_example is the work of my labmate Jack Norris
 
 Please run this in the VM provided by P4 in this p4 repo: https://github.com/p4lang/tutorials
 
